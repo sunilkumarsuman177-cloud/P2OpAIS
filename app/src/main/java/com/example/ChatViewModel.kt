@@ -1,5 +1,5 @@
 package com.example
-
+import com.aistudio.opais.kgvxt.BuildConfig
 import android.app.Application
 import android.content.Context
 import android.net.Uri
@@ -503,7 +503,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
     private fun queryGeminiOnline(lastPrompt: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val apiKey = BuildConfig.GEMINI_API_KEY
-            if (apiKey.isEmpty() || apiKey == "MY_GEMINI_API_KEY") {
+            if (apiKey.isEmpty() || apiKey == "AIzaSyCFU9BvtAYQkxP5fM7mbhNWQEgCU-vuX4E") {
                 _uiState.update { it.copy(isGenerating = false) }
                 addSystemMessage("⚠️ Missing API Key! Add Gemini key in AI Studio Secrets tab to start Online Mode.")
                 return@launch

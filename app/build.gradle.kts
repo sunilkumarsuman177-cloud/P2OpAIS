@@ -1,4 +1,3 @@
-// Location: P²-OPAIS/app/build.gradle.kts
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -23,15 +22,28 @@ android {
         }
     }
 
+    buildFeatures {
+        compose = true
+        buildConfig = true
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = true      
             isShrinkResources = true    
             isCrunchPngs = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            
+            // Safely fetches the key from GitHub Secrets environment during build
+            val apiKey = System.getenv("AIzaSyCFU9BvtAYQkxP5fM7mbhNWQEgCU-vuX4E") ?: "MOCK_KEY"
+            buildConfigField("String", "AIzaSyCFU9BvtAYQkxP5fM7mbhNWQEgCU-vuX4E", "\"$apiKey\"")
         }
         debug {
             isMinifyEnabled = false
+            
+            // Safely fetches the key from GitHub Secrets environment during build
+            val apiKey = System.getenv("AIzaSyCFU9BvtAYQkxP5fM7mbhNWQEgCU-vuX4E") ?: "MOCK_KEY"
+            buildConfigField("String", "AIzaSyCFU9BvtAYQkxP5fM7mbhNWQEgCU-vuX4E", "\"$apiKey\"")
         }
     }
 
@@ -44,26 +56,19 @@ android {
         jvmTarget = "17"
     }
 
-    buildFeatures {
-        compose = true
-        buildConfig = true // Generates BuildConfig.GEMINI_API_KEY smoothly
-    }
-
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.8"
     }
 }
 
 dependencies {
-    // Jetpack Compose Components
-    implementation(platform("androidx.compose:compose-bom:2023.10.01"))
+    // Jetpack Compose Components (Upgraded BOM to resolve HorizontalDivider & automirrored)
+    implementation(platform("androidx.compose:compose-bom:2024.04.01"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.material:material-icons-core")
-    
-    // CRITICAL FIX 1: Material Icons Extended for HorizontalDivider and Send buttons
-    implementation("androidx.compose.material:material-icons-extended:1.5.4")
+    implementation("androidx.compose.material:material-icons-extended")
     
     implementation("androidx.activity:activity-compose:1.8.2")
     implementation("androidx.core:core-ktx:1.12.0")
@@ -80,11 +85,11 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
-    // CRITICAL FIX 2: Moshi JSON parser engine dependencies
+    // Moshi JSON parser engine dependencies
     implementation("com.squareup.moshi:moshi:1.15.0")
     implementation("com.squareup.moshi:moshi-kotlin:1.15.0")
     ksp("com.squareup.moshi:moshi-kotlin-codegen:1.15.0")
     
-    // CRITICAL FIX 3: Moshi Converter for Retrofit integration (Replaces Gson)
+    // Moshi Converter for Retrofit integration
     implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
 }

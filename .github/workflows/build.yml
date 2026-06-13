@@ -25,9 +25,9 @@ jobs:
       uses: gradle/actions/setup-gradle@v3
       with:
         gradle-version: '8.5'
+        cache-disabled: true   # <--- THIS IS THE FIX. It bypasses the broken GitHub servers.
 
     - name: Build Debug APK with Cloud Tools
-      # Notice we removed the "./" and the "w". It now uses the cloud's global Gradle!
       run: gradle assembleDebug 
 
     - name: Upload Finished APK to GitHub

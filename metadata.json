@@ -1,0 +1,6 @@
+{
+  "name": "P² OpAIS",
+  "description": "A high-performance hybrid AI chat client optimized for students. Switches between online Gemini model and offline local .gguf models with separate coroutine scopes and dedicated resource management.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
